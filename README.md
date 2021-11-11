@@ -4,7 +4,7 @@ This branch exists solely because I wanted to use my Azure Speech Cognitive serv
 
 Check out "three.azure.html" in the examples folder and 'AZURE_ALTERNATIVE.js' for some old skool duck-punching and event burglerising, to replace Polly and AWS TTS service. It's ugly, but low footprint and very effective.
 
-The main timesaver for you here is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won;t do for database Ids...'
+The main timesaver for you here is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won't do for database Ids...'
 
 Blog coming soon...
 
