@@ -1,4 +1,18 @@
-# Amazon Sumerian Hosts
+# Amazon Sumerian Hosts ---> via AZURE  <---
+
+This branch exists solely because I wanted to use my Azure Speech Cognitive services with this AWS demo. It's a very cool three js viseme, phoneme, gestures, animations, rigging, SSML/TTS demo from Amazon's Sumarian Hosts demo/give-away. So now I can use Azure voices too! :)
+
+Check out "three.azure.html" in the examples folder and 'AZURE_ALTERNATIVE.js' for some old skool duck-punching and event burglerising, to replace Polly and AWS TTS service. It's ugly, but low footprint and very effective.
+
+The main timesaver for you here is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won;t do for database Ids...'
+
+Blog coming soon...
+
+-------------------------------------------------
+
+(Below as per parent mainline branch)
+
+----------------------------- 8< ---------------------
 
 Amazon Sumerian Hosts is an experimental open source project that aims to make it easy to create interactive animated 3D characters that can be rendered on the Web and leverage AWS Services such as [Amazon Polly](https://aws.amazon.com/polly/). It defines a Javascript API for managing animations, synthesizing and playing speech with Amazon Polly, and generating lipsync animation at runtime in sync with Polly generated audio. The core API can be extended to support the Web rendering engine of your choice. We have included support for both [three.js](https://threejs.org/) and [Babylon.js](https://www.babylonjs.com/) as examples of how to do this.
 

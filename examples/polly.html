@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-browser.html -->
+    <meta charset="UTF-8">
+    <title>AWS SDK for JavaScript - Browser Getting Started Application</title>
+</head>
+
+<body>
+    <div id="textToSynth">
+        <input autofocus size="23" type="text" id="textEntry" value="It's very good to meet you." />
+        <button class="btn default" onClick="speakText()">Synthesize</button>
+        <p id="result">Enter text above then click Synthesize</p>
+    </div>
+    <audio id="audioPlayback" controls>
+        <source id="audioSource" type="audio/mp3" src="">
+    </audio>
+    <!-- (script elements go here) -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1026.0.min.js"></script>
+
+    <script type="text/javascript">
+
+        // Initialize the Amazon Cognito credentials provider
+        AWS.config.region = '<YOUR REGION>';  // eg eu-west-2
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: '<YOUR KEY' }); // Combination of your region and a GUID
+
+        // Function invoked by button click
+        function speakText() {
+            // Create the JSON parameters for getSynthesizeSpeechUrl
+            var speechParams = {
+                OutputFormat: "mp3",
+                SampleRate: "16000",
+                Text: "",
+                TextType: "text",
+                VoiceId: "Matthew"
+            };
+            speechParams.Text = document.getElementById("textEntry").value;
+
+            // Create the Polly service object and presigner object
+            var polly = new AWS.Polly({ apiVersion: '2016-06-10' });
+            var signer = new AWS.Polly.Presigner(speechParams, polly)
+
+            // Create presigned URL of synthesized speech file
+            signer.getSynthesizeSpeechUrl(speechParams, function (error, url) {
+                if (error) {
+                    document.getElementById('result').innerHTML = error;
+                } else {
+                    document.getElementById('audioSource').src = url;
+                    document.getElementById('audioPlayback').load();
+                    document.getElementById('result').innerHTML = "Speech ready to play.";
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<head>
+</head>
+<body>
+
+<button id="btn">Click</button>
+
+<script src="microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+<script>
+
+const speechConfig = SpeechSDK.SpeechConfig.fromSubscription("<YOUR KEY (a GUID)>", "<REGION (eg uksouth)>");
+const audioConfig = SpeechSDK.AudioConfig.fromDefaultSpeakerOutput();
+const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig, audioConfig);
+
+synthesizer.visemeReceived = function (s, e) {
+    window.console.log("(Viseme), Audio offset: " + e.audioOffset / 10000 + "ms. Viseme ID: " + e.visemeId);
+}
+
+function synthesizeSpeech() {
+    synthesizer.speakSsmlAsync(
+`<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+    <voice name="en-US-ChristopherNeural">
+        <prosody contour="(60%,-80%) (100%,+100%)" >
+            Were you the only person in the room?
+        </prosody>
+    </voice>
+</speak>`,
+        result => {
+            if (result) {
+                synthesizer.close();
+
+                console.log("result", result);
+
+
+                return result.audioData;
+            }
+        },
+        error => {
+            console.log(error);
+            synthesizer.close();
+        });
+}
+
+var btn = document.getElementById("btn");
+btn.addEventListener("click", btnClicked);
+
+function btnClicked(e) {
+	synthesizeSpeech();
+}
+
+</script>
+
+</body>
+</html>
