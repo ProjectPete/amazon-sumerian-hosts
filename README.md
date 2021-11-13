@@ -6,11 +6,13 @@ For an "ugly hack version" - Check out "three.azure.html" in the examples folder
 
 Everything needed to replace AWS with Azure is in - [src/threeAzure/awspack/TextToSpeechFeature.js](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/src/threeAzure/awspack/TextToSpeechFeature.js)
 
-An demo page is available here - [examples/three-azure-v2.html](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/examples/three-azure-v2.html)
+A demo page is available here - [examples/three-azure-v2.html](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/examples/three-azure-v2.html)
 
-Just add your Azure Cognitive Speech Service key and region into the fields in the HTML page (just like the AWS demo) and that's it!  :D 
+Just clone the project, add your Azure Cognitive Speech Service key and region into the fields in the HTML page (just like the AWS demo) and open three-azure-v2.html.
 
-The main timesaver for here is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won't do for database Ids. Of course you could just define your own viseme lookup tables, but this was quicker :D
+This need to be served from a web service. You can't just open it on the local drive. For convenience, I've also added a Python web server startup script [PythonServer.py](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/pythonServer.py). Install Python 3, navigate to the root folder and type "pythonServer". Job's-a-good'n.
+
+The main short-cut for me is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won't do for database Ids. There is a built-in method to override the viseme mappings, and define your own viseme lookups. 
 
 Blog coming soon...
 
