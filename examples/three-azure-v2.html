@@ -1,6 +1,6 @@
-<!-- 
+<!--
   Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-  SPDX-License-Identifier: MIT-0 
+  SPDX-License-Identifier: MIT-0
 -->
 <!DOCTYPE html>
 <html>
@@ -37,7 +37,7 @@
 
         .textEntry {
             min-width: 305px;
-            min-height: 200px;
+            min-height: 150px;
             outline: 0px;
             padding: 10px;
             resize: both;
@@ -123,7 +123,7 @@
     <!--Three.js dependencies-->
     <script src="https://threejs.org/build/three.min.js"></script>
     <!--Host build file-->
-    <script type="text/javascript" src="../dist/host.three.js"></script>
+    <script type="text/javascript" src="../dist/host.threeAzure.js"></script>
 </head>
 
 <body>
@@ -131,8 +131,6 @@
     <div id="loadScreen">
         <div id="loader"></div>
     </div>
-
-    <!-- Azure = Bookmarks - https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-synthesis-markup?tabs=csharp#bookmark-element -->
 
     <!--Text to speech controls-->
     <div id="textToSpeech">
@@ -143,7 +141,8 @@
 <speak>
             <amazon:domain name="conversational">
     Hello, my name is Luke. I used to only be a host inside Amazon Sumerian, but
-    now you can use me in other Javascript runtime environments like three js, Babylon js, and EVEN AZURE!!. Right now.. <mark name='{"feature":"PointOfInterestFeature","method":"setTargetByName","args":["chargaze"]}' /> 
+    now you can use me in other Javascript runtime environments like three js, Babylon js and now EVEN with Azure! Right now, 
+            <mark name='{"feature":"PointOfInterestFeature","method":"setTargetByName","args":["chargaze"]}' /> 
     my friend and I here are in three js.
   </amazon:domain>
 </speak>
@@ -173,12 +172,8 @@
         <div>
             <button id="playEmote" class="gestureButton">Play Emote</button>
         </div>
-        <div>
-            <button id="playAzure" class="gestureButton">Use Azure</button>
-        </div>
     </div>
 
-    <!-- Pete/Azure: Added #1 -->
     <script src="/examples/SpeechSDK-JavaScript-1.18.0/microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
 
     <!--Create the Three.js scene-->
@@ -186,38 +181,22 @@
         import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
         import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
 
-        // Pete/Azure: Added #2
-        import * as azure from './AZURE_ALTERNATIVE.js';
-
         const renderFn = [];
         const speakers = new Map([
             ['Luke', undefined],
             ['Alien', undefined],
         ]);
 
-
-        // Pete/Azure: Added #3
-        azure.duckPunchAwsIntoAzure(getCurrentHost);
-
         main();
 
         async function main() {
-            // Initialize AWS and create Polly service objects
-            window.AWS.config.region = 'us-west-2';
-            window.AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                IdentityPoolId: '<Enter Cognito Identity Pool ID here>',
-            });
-            const polly = new AWS.Polly();
-            const presigner = new AWS.Polly.Presigner();
-            const speechInit = HOST.aws.TextToSpeechFeature.initializeService(
-                polly,
-                presigner,
-                window.AWS.VERSION
-            );
+            // Initialize Azure Speech Synthisis
+            const ServiceKey = "<YOUR AZURE SPEECH KEY (long hex number)>";
+            const ServiceRegion = "<YOUR SERVICE REGION (eg uksouth)>";
+            const speechInit = HOST.aws.TextToSpeechFeature.initializeForAzure(ServiceKey, ServiceRegion);
 
             // Define the glTF assets that will represent the host
-            const characterFile1 =
-                './assets/glTF/characters/adult_male/luke/luke.gltf';
+            const characterFile1 = './assets/glTF/characters/adult_male/luke/luke.gltf';
             const characterFile2 = './assets/glTF/characters/alien/alien.gltf';
             const animationPath1 = './assets/glTF/animations/adult_male';
             const animationPath2 = './assets/glTF/animations/alien';
@@ -236,12 +215,14 @@
             const audioAttachJoint2 = 'charhead';
             const lookJoint1 = 'charjx_c_look'; // Name of the joint to use for point of interest target tracking
             const lookJoint2 = 'chargaze';
-            const voice1 = 'Matthew'; // Polly voice. Full list of available voices at: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
-            const voice2 = 'Ivy';
-            const voiceEngine = 'neural'; // Neural engine is not available for all voices in all regions: https://docs.aws.amazon.com/polly/latest/dg/NTTS-main.html
+
+            const voice1 = { regionCode: 'en-us', name: 'en-US-ChristopherNeural' };        // Azure voice
+            const voice2 = { regionCode: 'en-us', name: 'en-US-AriaNeural' };               // Azure voice
+            const voiceEngine = 'neural';                   // Unused for Azure
 
             // Set up the scene and host
             const { scene, camera, clock } = createScene();
+
             const {
                 character: character1,
                 clips: clips1,
@@ -252,6 +233,7 @@
                 animationPath1,
                 animationFiles
             );
+
             const {
                 character: character2,
                 clips: clips2,
@@ -263,12 +245,12 @@
                 animationFiles
             );
 
-            character1.position.set(1.25, 0, 0);
+            character1.position.set(1, 0, 0);
             character1.rotateY(-0.5);
-            character2.position.set(-0.5, 0, 0);
+            character2.position.set(-0.2, 0, 0);
             character2.rotateY(0.5);
 
-            // Find the joints defined by name
+            //// Find the joints defined by name
             const audioAttach1 = character1.getObjectByName(audioAttachJoint1);
             const audioAttach2 = character2.getObjectByName(audioAttachJoint2);
             const lookTracker1 = character1.getObjectByName(lookJoint1);
@@ -303,6 +285,7 @@
                 blinkClips1,
                 poiClips1,
             ] = clips1;
+
             const host1 = createHost(
                 character1,
                 audioAttach1,
@@ -323,6 +306,7 @@
                 camera,
                 scene
             );
+
             const [
                 idleClips2,
                 lipsyncClips2,
@@ -332,6 +316,7 @@
                 blinkClips2,
                 poiClips2,
             ] = clips2;
+
             const host2 = createHost(
                 character2,
                 audioAttach2,
@@ -382,6 +367,7 @@
                 host2.TextToSpeechFeature.EVENTS.resume,
                 onHost2StartSpeech
             );
+
             HOST.aws.TextToSpeechFeature.listenTo(
                 HOST.aws.TextToSpeechFeature.EVENTS.pause,
                 onStopSpeech
@@ -400,7 +386,13 @@
             speakers.set('Luke', host1);
             speakers.set('Alien', host2);
 
-            initializeUX();
+            try {
+                initializeUX();
+            }
+            catch (e) {
+                console.log("Error", e);
+            }
+
         }
 
         // Set up base scene
@@ -604,14 +596,10 @@
             const host = new HOST.HostObject({ owner: character, clock });
             renderFn.push(() => {
                 host.update();
-                // Pete/Azure: Added #4
                 if (host.visemeHandler) {
                     host.visemeHandler.CheckForViseme();
                 }
             });
-
-            // Pete/Azure: Added #5
-            host.handleButtons = new azure.handleButtons(host);
 
             // Set up text to speech
             const audioListener = new THREE.AudioListener();
@@ -768,12 +756,14 @@
                     weight: 0,
                 };
             });
+
             host.AnimationFeature.addAnimation(
                 'Viseme',
                 'visemes',
                 HOST.anim.AnimationTypes.freeBlend,
                 { blendStateOptions }
             );
+
             host.AnimationFeature.playAnimation('Viseme', 'visemes');
 
             // POI poses
@@ -812,9 +802,11 @@
 
             // Apply bindPoseOffset clip if it exists
             if (bindPoseOffset !== undefined) {
+
                 host.AnimationFeature.addLayer('BindPoseOffset', {
                     blendMode: HOST.anim.LayerBlendModes.Additive,
                 });
+
                 host.AnimationFeature.addAnimation(
                     'BindPoseOffset',
                     bindPoseOffset.name,
@@ -829,6 +821,7 @@
                         ),
                     }
                 );
+
                 host.AnimationFeature.playAnimation(
                     'BindPoseOffset',
                     bindPoseOffset.name
@@ -839,6 +832,7 @@
             const visemeOptions = {
                 layers: [{ name: 'Viseme', animation: 'visemes' }],
             };
+
             const talkingOptions = {
                 layers: [
                     {
@@ -849,6 +843,7 @@
                     },
                 ],
             };
+
             host.addFeature(
                 HOST.LipsyncFeature,
                 false,
@@ -884,7 +879,6 @@
                 }
             );
 
-            // Pete/Azure: Added #6
             host.audioListener = audioListener;
 
             return host;
@@ -956,15 +950,13 @@
             // when buttons are clicked
             ['play', 'pause', 'resume', 'stop'].forEach(id => {
                 const button = document.getElementById(id);
-                button.onclick = () => {
+                button.onclick = function () {
                     const { name, host } = getCurrentHost(speakers);
                     const speechInput = document.getElementsByClassName(
                         `textEntry ${name}`
                     )[0];
-
-                    // Pete/Azure: Added #7
-                    host.handleButtons[id](speechInput.value);      // replaces:  host.TextToSpeechFeature[id](speechInput.value);
-
+                    //host.handleButtons[id](speechInput.value);
+                    host.TextToSpeechFeature[id](speechInput.value);
                 };
             });
 
@@ -991,21 +983,8 @@
             const emoteButton = document.getElementById('playEmote');
             emoteButton.onclick = () => {
                 const { host } = getCurrentHost(speakers);
-                host.GestureFeature.playGesture('Emote', emoteSelect.value);
-            };
-
-            const azureButton = document.getElementById('playAzure');
-            azureButton.onclick = () => {
-                //azure.playAudio(host.audioListener);
-                const { host } = getCurrentHost(speakers);
                 window.currentHost = host; // debug
-
-                var ssmlBody = `<prosody contour="(60%,-80%) (100%,+100%)" >
-Were you the only person in the room?
-</prosody>`;
-                var lang = "en-US";
-                var voiceName = "en-US-ChristopherNeural";
-                azure.getAzureTTS(ssmlBody, lang, voiceName, host);
+                host.GestureFeature.playGesture('Emote', emoteSelect.value);
             };
 
             // Initialize tab
@@ -1042,6 +1021,7 @@ Were you the only person in the room?
                 });
             }
         }
+
     </script>
 </body>
 </html>

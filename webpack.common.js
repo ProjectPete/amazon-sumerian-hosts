@@ -7,6 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const corePath = path.resolve(__dirname, './src/core/');
 const threePath = path.resolve(__dirname, 'src/three.js/');
 const babylonPath = path.resolve(__dirname, 'src/Babylon.js/');
+const azurePath = path.resolve(__dirname, 'src/threeAzure/');
 
 const baseConfig = {
   mode: 'production',
@@ -98,4 +99,18 @@ const babylonConfig = {
   },
 };
 
-module.exports = [coreConfig, threeConfig, babylonConfig];
+const azureConfig = {
+    ...baseConfig,
+    entry: {
+        'host.threeAzure': ['babel-polyfill', './src/threeAzure/index.js'],
+    },
+    resolve: {
+        alias: {
+            ...baseConfig.resolve.alias,
+            app: azurePath,
+        },
+    },
+};
+
+
+module.exports = [coreConfig, threeConfig, babylonConfig, azureConfig];

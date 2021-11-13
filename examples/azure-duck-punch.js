@@ -1,4 +1,8 @@
-﻿function duckPunchAwsIntoAzure(getCurrentHostFunc) {
+﻿// WARNING: This is the quick hack version that goes with three-azure-v1.html. 
+// It was just a quick dive into the modules, hacking my way through with no grace.
+// Move straight on to three-azure-v2 for a proper module webpacked version
+
+function duckPunchAwsIntoAzure(getCurrentHostFunc) {
     let orig1 = HOST.aws.TextToSpeechFeature.initializeService;
     HOST.aws.TextToSpeechFeature.initializeService = async function (polly, presigner, windowAwsVersion) {
         this.polly2 = polly;
