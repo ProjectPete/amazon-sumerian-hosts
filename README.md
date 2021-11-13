@@ -2,7 +2,7 @@
 
 This branch exists solely because I wanted to use my Azure Speech Cognitive services with this AWS demo. It's a very cool three js viseme, phoneme, gestures, animations, rigging, SSML/TTS demo from Amazon's Sumarian Hosts demo/give-away. So now I can use Azure voices too! :)
 
-For an "ugly hack version" - Check out "three.azure.html" in the examples folder and 'AZURE_ALTERNATIVE.js' for some old skool duck-punching and event burglerising, to replace Polly and AWS TTS service. It's ugly, but it works, only took an hour to crack and encouraged me to return and doo it properly in version 2, below.
+For an "ugly hack version" - Check out "three.azure.html" in the examples folder and 'AZURE_ALTERNATIVE.js' for some old skool duck-punching and event burglerising, to replace Polly and AWS TTS service. It's ugly, but it works, only took an hour to crack and encouraged me to return, and do it properly in version 2, below.
 
 Everything needed to replace AWS with Azure is in - [src/threeAzure/awspack/TextToSpeechFeature.js](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/src/threeAzure/awspack/TextToSpeechFeature.js)
 
