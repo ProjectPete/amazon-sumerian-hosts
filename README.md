@@ -2,15 +2,15 @@
 
 This branch exists solely because I wanted to use my Azure Speech Cognitive services with this AWS demo. It's a very cool three js viseme, phoneme, gestures, animations, rigging, SSML/TTS demo from Amazon's Sumarian Hosts demo/give-away. So now I can use Azure voices too! :)
 
-Check out "three.azure.html" in the examples folder and 'AZURE_ALTERNATIVE.js' for some old skool duck-punching and event burglerising, to replace Polly and AWS TTS service. It's ugly, but low footprint and very effective.
-
-The main timesaver for you here is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won't do for database Ids. Of course you could just define your own viseme lookup tables, but this was quicker :D
+For an "ugly hack version" - Check out "three.azure.html" in the examples folder and 'AZURE_ALTERNATIVE.js' for some old skool duck-punching and event burglerising, to replace Polly and AWS TTS service. It's ugly, but it works, only took an hour to crack and encouraged me to return and doo it properly in version 2, below.
 
 Everything needed to replace AWS with Azure is in - [src/threeAzure/awspack/TextToSpeechFeature.js](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/src/threeAzure/awspack/TextToSpeechFeature.js)
 
 An demo page is available here - [examples/three-azure-v2.html](https://github.com/ProjectPete/amazon-sumerian-hosts/blob/mainline/examples/three-azure-v2.html)
 
 Just add your Azure Cognitive Speech Service key and region into the fields in the HTML page (just like the AWS demo) and that's it!  :D 
+
+The main timesaver for here is a table for viseme/pnoneme lookups between AWS and Azure, which of course differ by each platform which uses their own identifications. Some visemes are represented as squiggly unicode characters, which just won't do for database Ids. Of course you could just define your own viseme lookup tables, but this was quicker :D
 
 Blog coming soon...
 
