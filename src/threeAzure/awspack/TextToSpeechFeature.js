@@ -35,11 +35,6 @@ class TextToSpeechFeature extends CoreTextToSpeechFeature {
         this._setAudioContext();
         this._observeAudioContext();
         this._AzureAwsLookups = this._makeAzuAwsVismLookups();
-        //TextToSpeechFeature._AzureServiceKey = null;
-        //TextToSpeechFeature._AzureServiceRegion = null;
-        //this._AzureServiceKey = null ;
-        //this._AzureServiceRegion = null;
-        //this.initializeForAzure = this._initializeForAzure;
     }
 
     static async initializeService(polly, presigner, version) {
